@@ -5,11 +5,11 @@ class Grid extends React.Component {
 	constructor(){
 		super();
 
-		this.directions = {NORTH:'north', EAST:'east', WEST:'west', SOUTH:'south'};
+		this.directions = ['north', 'east', 'south', 'west'];
 
 		this.state = {
 			coordinates : [],
-			direction: this.directions.NORTH,
+			direction: this.directions[0],
 			isPlaced:false
 		}
 
@@ -26,7 +26,8 @@ class Grid extends React.Component {
 		//For now, let's place him here.
 		setTimeout(() => {
 			this.place(1,1);
-			this.move()
+			this.move();
+			this.turn();
 		},1000)
 		
 	}
@@ -59,7 +60,7 @@ class Grid extends React.Component {
 
 	//our place function. Simply sets his current square to 1, passes in direction, and sets placed flag to true.
 	//Since our origin is actually the southern corner, and not the north, we'll use the reverse calls to pull the ol' switcheroo.
-	place(x,y,facing = this.directions.NORTH){
+	place(x,y,facing = this.state.direction){
 		let currentSquares = this.resetState();
 		currentSquares.reverse();
 		currentSquares[x][y]=1
@@ -72,33 +73,52 @@ class Grid extends React.Component {
 		})
 	}
 
-	//moves pacman forward.
+	//moves pacman forward. Checks direction and updates accordingly.
 	move(){
-		let coordinates = {}
-		switch(this.state.direction){
-			case this.directions.NORTH:
-				coordinates = this.getCoordinates()
-				this.place(coordinates.x-1,coordinates.y);
-				break;
-			case this.directions.EAST:
-				coordinates = this.getCoordinates()
-				this.place(coordinates.x,coordinates.y+1);
-				break;
-			case this.directions.WEST:
-				coordinates = this.getCoordinates()
-				this.place(coordinates.x,coordinates.y-1);
-				break;
-			case this.directions.SOUTH:
-				coordinates = this.getCoordinates()
-				this.place(coordinates.x+1,coordinates.y);
-				break;
-			default:
-				Error("Oops, not that way!");
-				break;
+		if(this.state.isPlaced){
+			let coordinates = this.getCoordinates();
+			switch(this.state.direction){
+				case this.directions[0]:
+					//NORTH
+					this.place(coordinates.x-1,coordinates.y);
+					break;
+				case this.directions[1]:
+					//EAST
+					this.place(coordinates.x,coordinates.y+1);
+					break;
+				case this.directions[2]:
+					//SOUTH
+					this.place(coordinates.x+1,coordinates.y);
+					break;
+				case this.directions[3]:
+					//WEST
+					this.place(coordinates.x,coordinates.y-1);
+					break;
+				default:
+					Error("Oops, not that way!");
+					break;
 
+			}
+
+			console.log("I'll go "+this.state.direction);
 		}
+	}
 
-		console.log("I'll go "+this.state.direction);
+	//Adds one or subtracts one to directions array, depending on turn made. Avoids long switch case.
+	turn(direction = "left"){
+		if(this.state.isPlaced){
+			let coordinates = this.getCoordinates();
+			let newDirection = ''
+			if(direction === "right"){
+				newDirection = this.directions[this.directions.indexOf(this.state.direction)+1] || this.directions[0]
+			}
+			if(direction === "left"){
+				newDirection = this.directions[this.directions.indexOf(this.state.direction)-1] || this.directions[3]
+			}
+			this.place(coordinates.x, coordinates.y, newDirection)
+
+			console.log('facing ' + newDirection)
+		}
 	}
 
 	render(){
