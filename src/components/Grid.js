@@ -31,6 +31,10 @@ class Grid extends React.Component {
 			this.turn("left");
 			this.move();
 			this.report();
+			this.move();
+			this.report();
+			this.move();
+			this.report();
 		},1000)
 		
 	}
@@ -51,10 +55,13 @@ class Grid extends React.Component {
 	//returns our boy's current locale.
 	//I breifly considered holding the x and y values in state, but it would get strange setting them in move then calling place.
 	//I'd have to make another function to set their state, then run place to update after that. Felt messy to me.
+
+	//FOUND OUT REVERSE IS DESTRUCTIVE...! Swiped some stack overflow code to correct weirdness.
 	getCoordinates(){
-		for(let y in this.state.coordinates.reverse()){
-			for(let x in this.state.coordinates[y]){
-				if(this.state.coordinates[y][x]){
+		let coordinates = this.state.coordinates.reduce((ary, ele) => {ary.unshift(ele); return ary}, []);
+		for(let y in coordinates){
+			for(let x in coordinates[y]){
+				if(coordinates[y][x]){
 					return {x:parseInt(x),y:parseInt(y)}
 				}
 			}
@@ -66,7 +73,7 @@ class Grid extends React.Component {
 	place(x,y,facing = this.state.direction){
 		let currentSquares = this.resetState();
 		currentSquares.reverse();
-		currentSquares[x][y]=1
+		currentSquares[y][x]=1
 		currentSquares.reverse();
 
 		this.setState({
@@ -83,19 +90,19 @@ class Grid extends React.Component {
 			switch(this.state.direction){
 				case this.directions[0]:
 					//NORTH
-					this.place(coordinates.x+1,coordinates.y);
+					coordinates.y<4 && this.place(coordinates.x,coordinates.y+1);
 					break;
 				case this.directions[1]:
 					//EAST
-					this.place(coordinates.x,coordinates.y+1);
+					coordinates.x<4 && this.place(coordinates.x+1,coordinates.y);
 					break;
 				case this.directions[2]:
 					//SOUTH
-					this.place(coordinates.x-1,coordinates.y);
+					coordinates.y>0 && this.place(coordinates.x,coordinates.y-1);
 					break;
 				case this.directions[3]:
 					//WEST
-					this.place(coordinates.x,coordinates.y-1);
+					coordinates.x>0 && this.place(coordinates.x-1,coordinates.y);
 					break;
 				default:
 					Error("Oops, not that way!");
