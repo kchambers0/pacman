@@ -1,9 +1,15 @@
 import React from "react";
 
-function Coordinate(){
+function Coordinate(props){
+	let classes = "grid--row__coordinate"
+
+	if(props.pacman){
+		classes+=" pacman"
+	}
+
 	return (
-		<div className="grid--row__coordinate">
-			coord
+		<div className={classes}>
+			{props.x}, {props.y}
 		</div>
 	)
 }
