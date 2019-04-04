@@ -25,9 +25,12 @@ class Grid extends React.Component {
 
 		//For now, let's place him here.
 		setTimeout(() => {
-			this.place(1,1);
+			this.place(1,2,"east");
 			this.move();
-			this.turn();
+			this.move();
+			this.turn("left");
+			this.move();
+			this.report();
 		},1000)
 		
 	}
@@ -49,10 +52,10 @@ class Grid extends React.Component {
 	//I breifly considered holding the x and y values in state, but it would get strange setting them in move then calling place.
 	//I'd have to make another function to set their state, then run place to update after that. Felt messy to me.
 	getCoordinates(){
-		for(let x in this.state.coordinates){
-			for(let y in this.state.coordinates[x]){
-				if(this.state.coordinates[x][y]){
-					return {x:x,y:y}
+		for(let y in this.state.coordinates.reverse()){
+			for(let x in this.state.coordinates[y]){
+				if(this.state.coordinates[y][x]){
+					return {x:parseInt(x),y:parseInt(y)}
 				}
 			}
 		}
@@ -80,7 +83,7 @@ class Grid extends React.Component {
 			switch(this.state.direction){
 				case this.directions[0]:
 					//NORTH
-					this.place(coordinates.x-1,coordinates.y);
+					this.place(coordinates.x+1,coordinates.y);
 					break;
 				case this.directions[1]:
 					//EAST
@@ -88,7 +91,7 @@ class Grid extends React.Component {
 					break;
 				case this.directions[2]:
 					//SOUTH
-					this.place(coordinates.x+1,coordinates.y);
+					this.place(coordinates.x-1,coordinates.y);
 					break;
 				case this.directions[3]:
 					//WEST
@@ -100,7 +103,7 @@ class Grid extends React.Component {
 
 			}
 
-			console.log("I'll go "+this.state.direction);
+			//console.log("I'll go "+this.state.direction);
 		}
 	}
 
@@ -117,8 +120,14 @@ class Grid extends React.Component {
 			}
 			this.place(coordinates.x, coordinates.y, newDirection)
 
-			console.log('facing ' + newDirection)
+			//console.log('facing ' + newDirection)
 		}
+	}
+
+	//Reports on your current location.
+	report(){
+		let coordinates = this.getCoordinates();
+		console.log(`Report: ${coordinates.x}, ${coordinates.y}, ${this.state.direction}`)
 	}
 
 	render(){
