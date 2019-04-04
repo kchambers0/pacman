@@ -22,9 +22,13 @@ class Grid extends React.Component {
 			coordinates:this.resetState()
 		})
 
-		//For now, let's place him here.
 
-		this.place(0,0);
+		//For now, let's place him here.
+		setTimeout(() => {
+			this.place(1,1);
+			this.move()
+		},1000)
+		
 	}
 
 	//returns an empty board.
@@ -40,16 +44,61 @@ class Grid extends React.Component {
 			]
 	}
 
+	//returns our boy's current locale.
+	//I breifly considered holding the x and y values in state, but it would get strange setting them in move then calling place.
+	//I'd have to make another function to set their state, then run place to update after that. Felt messy to me.
+	getCoordinates(){
+		for(let x in this.state.coordinates){
+			for(let y in this.state.coordinates[x]){
+				if(this.state.coordinates[x][y]){
+					return {x:x,y:y}
+				}
+			}
+		}
+	}
+
 	//our place function. Simply sets his current square to 1, passes in direction, and sets placed flag to true.
+	//Since our origin is actually the southern corner, and not the north, we'll use the reverse calls to pull the ol' switcheroo.
 	place(x,y,facing = this.directions.NORTH){
 		let currentSquares = this.resetState();
+		currentSquares.reverse();
 		currentSquares[x][y]=1
+		currentSquares.reverse();
 
 		this.setState({
 			coordinates: currentSquares,
 			direction: facing,
 			isPlaced:true
 		})
+	}
+
+	//moves pacman forward.
+	move(){
+		let coordinates = {}
+		switch(this.state.direction){
+			case this.directions.NORTH:
+				coordinates = this.getCoordinates()
+				this.place(coordinates.x-1,coordinates.y);
+				break;
+			case this.directions.EAST:
+				coordinates = this.getCoordinates()
+				this.place(coordinates.x,coordinates.y+1);
+				break;
+			case this.directions.WEST:
+				coordinates = this.getCoordinates()
+				this.place(coordinates.x,coordinates.y-1);
+				break;
+			case this.directions.SOUTH:
+				coordinates = this.getCoordinates()
+				this.place(coordinates.x+1,coordinates.y);
+				break;
+			default:
+				Error("Oops, not that way!");
+				break;
+
+		}
+
+		console.log("I'll go "+this.state.direction);
 	}
 
 	render(){
