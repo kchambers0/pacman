@@ -12,3 +12,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.grid .grid--row::after{
+	content:'';
+	display:block;
+	clear:both;
+}
+
+.grid .grid--row .grid--row__coordinate{
+	padding:20px;
+	float:left;
+}

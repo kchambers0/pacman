@@ -2,7 +2,7 @@ import React from "react";
 
 function Coordinate(){
 	return (
-		<div className="coordinate">
+		<div className="grid--row__coordinate">
 			coord
 		</div>
 	)
