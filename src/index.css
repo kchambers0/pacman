@@ -142,4 +142,8 @@ h2{
 }
 p{
 	font-family: 'Montserrat', sans-serif;
+	color:#0000ff;
+	float:right;
+	margin-bottom:20px;
+	margin-right:20px;
 }
