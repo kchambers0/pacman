@@ -40,19 +40,23 @@ body, #root, .App{
 }
 .pacman::before{
 	content:'';
-	height:100px;
-	width:100px;
+	height:80px;
+	width:80px;
 	background-color:#ffff00;
 	display:block;
 	border-radius:50%;
+	position:absolute;
+	top:10px;
+	left:10px;
 	
 }
 .pacman::after{
 	content:'';
 	display:block;
-	border:50px solid transparent;
+	border:40px solid transparent;
 	position:absolute;
-	top:0;
+	top:10px;
+	left:10px;
 	
 }
 .north .pacman::after{
@@ -66,6 +70,51 @@ body, #root, .App{
 }
 .west .pacman::after{
 	border-left-color:#000000;
+}
+
+.controller{
+	width:500px;
+	margin:0 auto;
+	text-align:center;
+	padding-top:50px;
+}
+
+.controller button{
+	outline:none;
+	border:none;
+	color:#0000ff;
+	background-color:#000000;
+	font-size:24px;
+}
+.controller .joystick{
+	display:inline-block;
+	position:relative;
+	width:15px;
+	height:100px;
+	background-color:#aaaaaa;
+	margin-top:10px;
+}
+.controller .joystick::before{
+	content:'';
+	display:block;
+	width:50px;
+	height:50px;
+	background-color:#ff0000;
+	border-radius:50%;
+	position:absolute;
+	top:-5px;
+	left:-17px;
+}
+.controller .joystick::after{
+	content:'';
+	display:block;
+	width:10px;
+	height:10px;
+	background-color:#ffffff;
+	border-radius:50%;
+	position:absolute;
+	z-index:5;
+	left:8px;
 }
 
 h1{

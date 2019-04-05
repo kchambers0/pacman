@@ -1,5 +1,6 @@
 import React from 'react';
 import Coordinate from './Coordinate'
+import Controller from './Controller'
 
 class Grid extends React.Component {
 	constructor(){
@@ -13,8 +14,11 @@ class Grid extends React.Component {
 			isPlaced:false
 		}
 
-		//only function that sets state.
 		this.place = this.place.bind(this);
+		this.move = this.move.bind(this);
+		this.turn = this.turn.bind(this);
+		this.report = this.report.bind(this);
+		this.handleKeyDown = this.handleKeyDown.bind(this);
 	}
 
 	//Lets fake an ajax or something... we'll get the data at component mount.
@@ -23,6 +27,8 @@ class Grid extends React.Component {
 			coordinates:this.resetState()
 		})
 
+		//bind key events
+		document.addEventListener("keydown", this.handleKeyDown);
 
 		//For now, let's place him here.
 		setTimeout(() => {
@@ -41,6 +47,19 @@ class Grid extends React.Component {
 			this.report();
 		},1000)
 		
+	}
+
+	handleKeyDown(e){
+		e.preventDefault();
+		if(e.keyCode === 38){
+			this.move()
+		}
+		if(e.keyCode === 37){
+			this.turn('left')
+		}
+		if(e.keyCode === 39){
+			this.turn('right')
+		}
 	}
 
 	//returns an empty board.
@@ -140,6 +159,9 @@ class Grid extends React.Component {
 		if(this.state.isPlaced){
 			let coordinates = this.getCoordinates();
 			console.log(`Report: ${coordinates.x}, ${coordinates.y}, ${this.state.direction}`)
+
+			//apparently necessary because weird console warning.
+			return Promise.resolve("Dummy response to keep the console quiet");
 		}
 	}
 
@@ -153,9 +175,13 @@ class Grid extends React.Component {
 		let classes="grid "+this.state.direction
 
 		return(
-			<div className={classes}>
-				{CoordinateMap}
+			<div>
+				<div className={classes}>
+					{CoordinateMap}
+				</div>
+				<Controller turn={this.turn} move={this.move} report={this.report} />
 			</div>
+				
 		);
 	}
 }
