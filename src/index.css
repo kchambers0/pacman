@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Monoton|Montserrat');
+
 body {
   margin: 0;
   padding: 0;
@@ -12,18 +14,68 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+body, #root, .App{
+	height:100vh;
+	background-color:black;
+}
+.grid{
+	width:500px;
+	margin:0 auto;
+	border:5px solid #0000ff;
+	border-radius:20px;
 
+	box-shadow: 0 0 30px #0000ff;
+}
 .grid .grid--row::after{
 	content:'';
 	display:block;
 	clear:both;
 }
-
 .grid .grid--row .grid--row__coordinate{
-	padding:20px;
+	width:100px;
+	height:100px;
 	float:left;
+	text-align:center;
+	position:relative;
+}
+.pacman::before{
+	content:'';
+	height:100px;
+	width:100px;
+	background-color:#ffff00;
+	display:block;
+	border-radius:50%;
+	
+}
+.pacman::after{
+	content:'';
+	display:block;
+	border:50px solid transparent;
+	position:absolute;
+	top:0;
+	
+}
+.north .pacman::after{
+	border-top-color:#000000;
+}
+.east .pacman::after{
+	border-right-color:#000000;
+}
+.south .pacman::after{
+	border-bottom-color:#000000;
+}
+.west .pacman::after{
+	border-left-color:#000000;
 }
 
-.pacman{
-	color:red;
+h1{
+	font-family: 'Monoton', cursive;
+	font-weight:400;
+	font-size:72px;
+	margin:0;
+	text-align: center;
+	color:#0000ff;
+}
+p{
+	font-family: 'Montserrat', sans-serif;
 }

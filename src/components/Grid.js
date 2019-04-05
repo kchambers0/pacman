@@ -13,6 +13,7 @@ class Grid extends React.Component {
 			isPlaced:false
 		}
 
+		//only function that sets state.
 		this.place = this.place.bind(this);
 	}
 
@@ -35,6 +36,9 @@ class Grid extends React.Component {
 			this.report();
 			this.move();
 			this.report();
+			this.turn("right");
+			this.move();
+			this.report();
 		},1000)
 		
 	}
@@ -55,9 +59,8 @@ class Grid extends React.Component {
 	//returns our boy's current locale.
 	//I breifly considered holding the x and y values in state, but it would get strange setting them in move then calling place.
 	//I'd have to make another function to set their state, then run place to update after that. Felt messy to me.
-
-	//FOUND OUT REVERSE IS DESTRUCTIVE...! Swiped some stack overflow code to correct weirdness.
 	getCoordinates(){
+		//FOUND OUT REVERSE IS DESTRUCTIVE...! Swiped some stack overflow code to correct weirdness.
 		let coordinates = this.state.coordinates.reduce((ary, ele) => {ary.unshift(ele); return ary}, []);
 		for(let y in coordinates){
 			for(let x in coordinates[y]){
@@ -84,6 +87,7 @@ class Grid extends React.Component {
 	}
 
 	//moves pacman forward. Checks direction and updates accordingly.
+	//uses place because why not.
 	move(){
 		if(this.state.isPlaced){
 			let coordinates = this.getCoordinates();
@@ -133,8 +137,10 @@ class Grid extends React.Component {
 
 	//Reports on your current location.
 	report(){
-		let coordinates = this.getCoordinates();
-		console.log(`Report: ${coordinates.x}, ${coordinates.y}, ${this.state.direction}`)
+		if(this.state.isPlaced){
+			let coordinates = this.getCoordinates();
+			console.log(`Report: ${coordinates.x}, ${coordinates.y}, ${this.state.direction}`)
+		}
 	}
 
 	render(){
@@ -144,8 +150,10 @@ class Grid extends React.Component {
 			)
 		})
 
+		let classes="grid "+this.state.direction
+
 		return(
-			<div className="grid">
+			<div className={classes}>
 				{CoordinateMap}
 			</div>
 		);

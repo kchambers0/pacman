@@ -5,7 +5,10 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Grid />
+      	<div>
+	      	<h1>REACTMAN</h1>
+	        <Grid />
+        </div>
       </div>
     );
   }
