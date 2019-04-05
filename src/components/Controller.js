@@ -11,6 +11,8 @@ function Controller(props){
 			<button onClick={e => props.turn('right')}>{String.fromCharCode(8594)}</button>
 			<br/>
 			<button onClick={props.report}>report</button>
+			<br/>
+			<h2>{props.message}</h2>
 		</div>
 	)
 }

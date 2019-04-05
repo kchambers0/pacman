@@ -125,6 +125,21 @@ h1{
 	text-align: center;
 	color:#0000ff;
 }
+h2{
+	font-family: 'Monoton', cursive;
+	font-weight:400;
+	font-size:40px;
+	margin:0;
+	text-align:center;
+	color:#ffff00;
+
+	border:5px solid #0000ff;
+	border-radius:20px;
+
+	box-shadow: 0 0 30px #0000ff;
+	margin-top:50px;
+	margin-bottom:50px;
+}
 p{
 	font-family: 'Montserrat', sans-serif;
 }

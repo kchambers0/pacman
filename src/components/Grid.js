@@ -11,7 +11,8 @@ class Grid extends React.Component {
 		this.state = {
 			coordinates : [],
 			direction: this.directions[0],
-			isPlaced:false
+			isPlaced:false,
+			message:""
 		}
 
 		this.place = this.place.bind(this);
@@ -50,16 +51,23 @@ class Grid extends React.Component {
 	}
 
 	handleKeyDown(e){
-		e.preventDefault();
 		if(e.keyCode === 38){
+			e.preventDefault();
 			this.move()
 		}
 		if(e.keyCode === 37){
+			e.preventDefault();
 			this.turn('left')
 		}
 		if(e.keyCode === 39){
+			e.preventDefault();
 			this.turn('right')
 		}
+		if(e.keyCode === 32){
+			e.preventDefault();
+			this.report();
+		}
+		//console.log(e.keyCode)
 	}
 
 	//returns an empty board.
@@ -158,7 +166,12 @@ class Grid extends React.Component {
 	report(){
 		if(this.state.isPlaced){
 			let coordinates = this.getCoordinates();
-			console.log(`Report: ${coordinates.x}, ${coordinates.y}, ${this.state.direction}`)
+			let message = `Report: ${coordinates.x}, ${coordinates.y}, ${this.state.direction}`
+			console.log(message);
+
+			this.setState({
+				message:message
+			})
 
 			//apparently necessary because weird console warning.
 			return Promise.resolve("Dummy response to keep the console quiet");
@@ -179,7 +192,7 @@ class Grid extends React.Component {
 				<div className={classes}>
 					{CoordinateMap}
 				</div>
-				<Controller turn={this.turn} move={this.move} report={this.report} />
+				<Controller turn={this.turn} move={this.move} report={this.report} message={this.state.message} />
 			</div>
 				
 		);
